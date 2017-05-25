@@ -5,77 +5,102 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class Main2Activity extends AppCompatActivity {
-    TextView tv1;
-    ProgressBar pb;
+    TextView time;
+    EditText et1;
+    ImageView iv1;
     myTask mt;
+    int count, seconds, index;
+    static int food[] = {R.drawable.chicken, R.drawable.hamburger, R.drawable.hansik,
+            R.drawable.kalguksu, R.drawable.pizza,
+            R.drawable.spaghetti, R.drawable.ssalguksu};
+    boolean startCheck = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        tv1 = (TextView)findViewById(R.id.progressTv);
-        pb = (ProgressBar)findViewById(R.id.progress);
+        time = (TextView)findViewById(R.id.time_count);
+        et1 = (EditText)findViewById(R.id.seconds);
+        iv1=(ImageView)findViewById(R.id.food);
     }
 
     public void onClick(View v){
-        if(v.getId() == R.id.btn1){
-            mt = new myTask();
-            mt.execute(0);
+        if(v.getId() == R.id.to_The_First){
+            iv1.setImageResource(R.drawable.start_button);
+            startCheck = true;
         }
-        if(v.getId() == R.id.btn2){
-            mt.cancel(true);
+        if(v.getId() == R.id.food){
+            if(startCheck) {
+                mt = new myTask();
+                mt.execute(0);
+                startCheck = false;
+            }
+            else{
+                mt.cancel(true);
+            }
         }
     }
+
     class myTask extends AsyncTask<Integer, Integer, Void>{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pb.setProgress(0);
-            tv1.setText("진행률 : 0%");
-            tv1.setTextColor(Color.RED);
+            iv1.setImageResource(food[0]);
+            index = 0;
+            count = Integer.parseInt(et1.getText().toString());
+            seconds = 0;
+            time.setVisibility(View.VISIBLE);
+            time.setText("시작부터 " + seconds + "초");
         }
 
         @Override
         protected Void doInBackground(Integer... params) {
-            for(int i = 1; i<=100; i++){
-                if(isCancelled() == true){
-                    cancel(true);
-                }
+            while(isCancelled()){
+                seconds++;
                 try {
-                    Thread.sleep(200);
-                    publishProgress(i);
+                    Thread.sleep(1000);
+
+                    if(seconds%count == 0){
+                        if(index>=6) {
+                            index = 0;
+                        }
+                        publishProgress(seconds, ++index);
+                    }
+                    else {
+                        publishProgress(seconds, index);
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
+            cancel(true);
             return null;
         }
 
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
-            pb.setProgress(values[0]);
-            tv1.setText("진행률 : " + values[0] + "%");
+            time.setText("시작부터 " + values[0] + "초");
+            iv1.setImageResource(food[values[1]]);
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            pb.setProgress(100);
-            tv1.setText("완료되었습니다.");
-            tv1.setTextColor(Color.BLUE);
+
         }
 
         @Override
         protected void onCancelled() {
             super.onCancelled();
-            tv1.setText("중지되었습니다.");
-            tv1.setTextColor(Color.GRAY);
+
         }
     }
 }
