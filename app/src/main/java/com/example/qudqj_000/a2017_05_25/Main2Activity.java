@@ -37,6 +37,7 @@ public class Main2Activity extends AppCompatActivity {
             iv1.setImageResource(R.drawable.start_button);
             time.setVisibility(View.GONE);
             startCheck = true;
+            et1.setText("");
         }
         if(v.getId() == R.id.food){
             if(startCheck) {
@@ -55,7 +56,7 @@ public class Main2Activity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             iv1.setImageResource(food[0]);
-            index = -1;
+            index = 0;
             count = Integer.parseInt(et1.getText().toString());
             seconds = 0;
             time.setVisibility(View.VISIBLE);
