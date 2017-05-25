@@ -55,7 +55,7 @@ public class Main2Activity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             iv1.setImageResource(food[0]);
-            index = 0;
+            index = -1;
             count = Integer.parseInt(et1.getText().toString());
             seconds = 0;
             time.setVisibility(View.VISIBLE);
@@ -70,7 +70,7 @@ public class Main2Activity extends AppCompatActivity {
                     Thread.sleep(1000);
                     if(seconds%count == 0){
                         if(index>=6) {
-                            index = 0;
+                            index = -1;
                         }
                         publishProgress(seconds, ++index);
                     }
