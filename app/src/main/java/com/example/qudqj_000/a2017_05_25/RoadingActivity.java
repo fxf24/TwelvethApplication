@@ -14,7 +14,7 @@ public class RoadingActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(RoadingActivity.this, MainActivity.class);
+                Intent intent = new Intent(RoadingActivity.this, Main2Activity.class);
                 startActivity(intent);
                 finish();
             }

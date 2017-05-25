@@ -1,13 +1,11 @@
 package com.example.qudqj_000.a2017_05_25;
 
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class Main2Activity extends AppCompatActivity {
@@ -19,6 +17,9 @@ public class Main2Activity extends AppCompatActivity {
     static int food[] = {R.drawable.chicken, R.drawable.hamburger, R.drawable.hansik,
             R.drawable.kalguksu, R.drawable.pizza,
             R.drawable.spaghetti, R.drawable.ssalguksu};
+    static String foodName[] = {"치킨", "햄버거",
+            "한식", "칼국수", "피자",
+            "스파게티", "쌀국수"};
     boolean startCheck = true;
 
     @Override
@@ -34,6 +35,7 @@ public class Main2Activity extends AppCompatActivity {
     public void onClick(View v){
         if(v.getId() == R.id.to_The_First){
             iv1.setImageResource(R.drawable.start_button);
+            time.setVisibility(View.GONE);
             startCheck = true;
         }
         if(v.getId() == R.id.food){
@@ -62,11 +64,10 @@ public class Main2Activity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Integer... params) {
-            while(isCancelled()){
+            while(isCancelled()==false){
                 seconds++;
                 try {
                     Thread.sleep(1000);
-
                     if(seconds%count == 0){
                         if(index>=6) {
                             index = 0;
@@ -100,7 +101,7 @@ public class Main2Activity extends AppCompatActivity {
         @Override
         protected void onCancelled() {
             super.onCancelled();
-
+            time.setText(foodName[index] + "선택" +"(" + (seconds-1)+" 초)");
         }
     }
 }
